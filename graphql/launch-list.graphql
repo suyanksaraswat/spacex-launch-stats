@@ -1,0 +1,27 @@
+query pastLaunchesList($limit: Int!, offset: Int!) {
+    launchesPast(limit: $limit, offset: $offset) {
+      id
+      mission_name
+      launch_date_local
+      launch_site {
+        site_name_long
+      }
+      launch_success
+      links {
+        wikipedia
+        flickr_images
+        mission_patch_small
+      }
+      launch_date_utc
+
+      rocket {
+        rocket_name
+        rocket_type
+      }
+      ships {
+        name
+        home_port
+        image
+      }
+    }
+}
