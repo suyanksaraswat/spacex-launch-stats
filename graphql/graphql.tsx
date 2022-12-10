@@ -178,6 +178,10 @@ export type PastLaunchesListQuery = { __typename?: "Query" } & {
             launch_site?: Maybe<
               { __typename?: "LaunchSite" } & Pick<LaunchSite, "site_name_long">
             >;
+
+            ships?: Array<
+              Maybe<({ __typename?: "Ships" } & "name") | "home_port" | "image">
+            >;
           }
       >
     >

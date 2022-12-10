@@ -1,15 +1,13 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { usePastLaunchesListQuery } from "../../graphql/graphql";
 import CompareModal from "../../components/CompareModal";
 
 const Home: NextPage = () => {
   const limit = 9;
   const [open, setOpen] = useState(false);
-  const [selectedData, setSelectedData] = useState<{ id?: string | null }[]>(
-    []
-  );
+  const [selectedData, setSelectedData] = useState<any[]>([]);
   const [offset, setOffset] = useState(0);
 
   const { data, fetchMore, loading, error } = usePastLaunchesListQuery({

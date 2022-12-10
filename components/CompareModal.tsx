@@ -1,9 +1,28 @@
-import { useEffect, useState } from "react";
+interface launchDataI {
+  mission_name: string;
+  launch_date_utc: string;
+  rocket: {
+    rocket_name: string;
+    rocket_type: string;
+  };
+  launch_site: {
+    site_name_long: string;
+  };
+  ships: {
+    name: string;
+    home_port: string;
+    image: string;
+  }[];
+  links: {
+    mission_patch_small: string;
+    wikipedia: string;
+  };
+}
 
 interface CompareModalI {
   open: boolean;
   setOpen: (state: boolean) => void;
-  data: any;
+  data: launchDataI[];
 }
 
 const CompareModal = ({ open, setOpen, data }: CompareModalI) => {
@@ -89,72 +108,47 @@ const CompareModal = ({ open, setOpen, data }: CompareModalI) => {
               </tr>
             </thead>
             <tbody>
-              {data?.map(
-                (
-                  res: {
-                    mission_name: string;
-                    launch_date_utc: string;
-                    rocket: {
-                      rocket_name: string;
-                      rocket_type: string;
-                    };
-                    launch_site: {
-                      site_name_long: string;
-                    };
-                    ships: {
-                      name: string;
-                      home_port: string;
-                      image: string;
-                    }[];
-                    links: {
-                      mission_patch_small: string;
-                      wikipedia: string;
-                    };
-                  },
-                  i: number
-                ) => (
-                  <tr key={i} className="border-b bg-white">
-                    <td className="px-2 py-2 text-sm font-medium text-gray-900">
-                      {res?.mission_name}
-                    </td>
-                    <td className="px-2 py-2 text-sm font-medium text-gray-900">
-                      {res?.rocket?.rocket_name}
-                    </td>
-                    <td className="px-2 py-2 text-sm font-medium text-gray-900">
-                      {res?.rocket?.rocket_type}
-                    </td>
-                    <td className="px-2 py-2 text-sm font-medium text-gray-900">
-                      {res?.launch_site?.site_name_long}
-                    </td>
-                    <td className="px-2 py-2 text-sm font-medium text-gray-900">
-                      {`${new Date(res?.launch_date_utc).toLocaleDateString()}`}
-                    </td>
-                    <td className="text-sm font-medium text-gray-900">
-                      {res?.ships?.map((ship, j) => (
-                        <div className="border-b px-2 py-2 text-sm font-medium text-gray-900">
-                          <div key={j}>Name: {ship?.name}</div>
-                          <div key={j}>Home Port: {ship?.home_port}</div>
-                          <div key={j}>Image: {ship?.image}</div>
-                        </div>
-                      ))}
-                    </td>
+              {data?.map((res: launchDataI, i: number) => (
+                <tr key={i} className="border-b bg-white">
+                  <td className="px-2 py-2 text-sm font-medium text-gray-900">
+                    {res?.mission_name}
+                  </td>
+                  <td className="px-2 py-2 text-sm font-medium text-gray-900">
+                    {res?.rocket?.rocket_name}
+                  </td>
+                  <td className="px-2 py-2 text-sm font-medium text-gray-900">
+                    {res?.rocket?.rocket_type}
+                  </td>
+                  <td className="px-2 py-2 text-sm font-medium text-gray-900">
+                    {res?.launch_site?.site_name_long}
+                  </td>
+                  <td className="px-2 py-2 text-sm font-medium text-gray-900">
+                    {`${new Date(res?.launch_date_utc).toLocaleDateString()}`}
+                  </td>
+                  <td className="text-sm font-medium text-gray-900">
+                    {res?.ships?.map((ship, j) => (
+                      <div
+                        className="border-b px-2 py-2 text-sm font-medium text-gray-900"
+                        key={j}
+                      >
+                        <div>Name: {ship?.name}</div>
+                        <div>Home Port: {ship?.home_port}</div>
+                        <div>Image: {ship?.image}</div>
+                      </div>
+                    ))}
+                  </td>
 
-                    <td className="px-2 py-2 text-sm font-medium text-gray-900">
-                      <a href={res?.links?.wikipedia}>
-                        {res?.links?.wikipedia}
-                      </a>
-                    </td>
+                  <td className="px-2 py-2 text-sm font-medium text-gray-900">
+                    <a href={res?.links?.wikipedia}>{res?.links?.wikipedia}</a>
+                  </td>
 
-                    <td
-                      className={`px-2 py-2 text-sm font-medium text-gray-900`}
-                    >
-                      <a href={res?.links?.mission_patch_small}>
-                        {res?.links?.mission_patch_small}
-                      </a>
-                    </td>
-                  </tr>
-                )
-              )}
+                  <td className={`px-2 py-2 text-sm font-medium text-gray-900`}>
+                    <a href={res?.links?.mission_patch_small}>
+                      {res?.links?.mission_patch_small}
+                    </a>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         ) : (
