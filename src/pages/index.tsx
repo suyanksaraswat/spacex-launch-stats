@@ -62,26 +62,13 @@ const Home: NextPage = () => {
                 Compare
               </button>
             </div>
-            <div className="mb-6 flex w-full justify-between gap-2">
-              <div className="flex items-center gap-2">
+            <div className="mb-6 flex w-full flex-col justify-between gap-2 md:flex-row">
+              <div className="items-normal flex flex-col gap-2 md:flex-row md:items-center">
                 <p className="whitespace-nowrap font-generalsans text-base font-bold text-[#525C76]">
                   Search by:
                 </p>
                 <select
-                  className="form-select m-0
-      block
-      appearance-none
-      rounded
-      border
-      border-solid
-      border-gray-300
-      bg-white bg-clip-padding bg-no-repeat
-      px-3 py-1.5 text-base
-      font-normal
-      text-gray-700
-      transition
-      ease-in-out
-      focus:border-[#6B53FF] focus:bg-white focus:text-gray-700 focus:outline-none"
+                  className="form-select m-0 block appearance-none rounded border border-solid border-gray-300 bg-white bg-clip-padding bg-no-repeat px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border-[#6B53FF] focus:bg-white focus:text-gray-700 focus:outline-none"
                   value={filterBy}
                   onChange={(e) => setFilterBy(e.target.value)}
                 >
@@ -90,23 +77,7 @@ const Home: NextPage = () => {
                 </select>
                 <input
                   type="text"
-                  className="
-        form-control
-        m-0
-        block
-        w-full
-        rounded
-        border
-        border-solid
-        border-gray-300
-        bg-white bg-clip-padding
-        px-3 py-1.5 text-base
-        font-normal
-        text-gray-700
-        transition
-        ease-in-out
-        focus:border-[#6B53FF] focus:bg-white focus:text-gray-700 focus:outline-none
-      "
+                  className="form-control m-0 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border-[#6B53FF] focus:bg-white focus:text-gray-700 focus:outline-none"
                   placeholder="e.g. Starlink"
                   value={filterValue}
                   onChange={(e) => setFilterValue(e.target.value)}
@@ -116,17 +87,6 @@ const Home: NextPage = () => {
                   onClick={async () => {
                     setSearchValue(filterValue);
                     setOffset(0);
-
-                    // await fetchMore({
-                    //   variables: {
-                    //     offset,
-                    //     limit,
-                    //     mission_name:
-                    //       filterBy === "mission_name" ? filterValue : "",
-                    //     rocket_name:
-                    //       filterBy === "rocket_name" ? filterValue : "",
-                    //   },
-                    // });
                   }}
                 >
                   Search
