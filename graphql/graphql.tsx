@@ -153,6 +153,8 @@ export type LaunchDetailsQuery = { __typename?: "Query" } & {
 export type PastLaunchesListQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
+  mission_name?: Scalars["String"];
+  rocket_name?: Scalars["String"];
 }>;
 
 export type PastLaunchesListQuery = { __typename?: "Query" } & {
@@ -242,8 +244,17 @@ export function useLaunchDetailsQuery(
 }
 
 export const PastLaunchesListDocument = gql`
-  query pastLaunchesList($limit: Int!, $offset: Int!) {
-    launchesPast(limit: $limit, offset: $offset) {
+  query pastLaunchesList(
+    $limit: Int!
+    $offset: Int!
+    $mission_name: String!
+    $rocket_name: String!
+  ) {
+    launchesPast(
+      limit: $limit
+      offset: $offset
+      find: { mission_name: $mission_name, rocket_name: $rocket_name }
+    ) {
       id
       mission_name
       launch_date_local

@@ -1,5 +1,5 @@
-query pastLaunchesList($limit: Int!, offset: Int!) {
-    launchesPast(limit: $limit, offset: $offset) {
+query pastLaunchesList($limit: Int!, $offset: Int!, $find: { mission_name: String!,  rocket_name: String! }) {
+    launchesPast(limit: $limit, offset: $offset, find: $find) {
       id
       mission_name
       launch_date_local

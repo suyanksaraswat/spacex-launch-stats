@@ -9,11 +9,16 @@ const Home: NextPage = () => {
   const [open, setOpen] = useState(false);
   const [selectedData, setSelectedData] = useState<any[]>([]);
   const [offset, setOffset] = useState(0);
+  const [filterBy, setFilterBy] = useState("mission_name");
+  const [filterValue, setFilterValue] = useState("");
+  const [searchValue, setSearchValue] = useState("");
 
   const { data, fetchMore, loading, error } = usePastLaunchesListQuery({
     variables: {
       offset,
       limit,
+      mission_name: filterBy === "mission_name" ? searchValue : "",
+      rocket_name: filterBy === "rocket_name" ? searchValue : "",
     },
   });
 
@@ -56,6 +61,77 @@ const Home: NextPage = () => {
               >
                 Compare
               </button>
+            </div>
+            <div className="mb-6 flex w-full justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <p className="whitespace-nowrap font-generalsans text-base font-bold text-[#525C76]">
+                  Search by:
+                </p>
+                <select
+                  className="form-select m-0
+      block
+      appearance-none
+      rounded
+      border
+      border-solid
+      border-gray-300
+      bg-white bg-clip-padding bg-no-repeat
+      px-3 py-1.5 text-base
+      font-normal
+      text-gray-700
+      transition
+      ease-in-out
+      focus:border-[#6B53FF] focus:bg-white focus:text-gray-700 focus:outline-none"
+                  value={filterBy}
+                  onChange={(e) => setFilterBy(e.target.value)}
+                >
+                  <option value="mission_name">Mission name</option>
+                  <option value="rocket_name">Rocket name</option>
+                </select>
+                <input
+                  type="text"
+                  className="
+        form-control
+        m-0
+        block
+        w-full
+        rounded
+        border
+        border-solid
+        border-gray-300
+        bg-white bg-clip-padding
+        px-3 py-1.5 text-base
+        font-normal
+        text-gray-700
+        transition
+        ease-in-out
+        focus:border-[#6B53FF] focus:bg-white focus:text-gray-700 focus:outline-none
+      "
+                  placeholder="e.g. Starlink"
+                  value={filterValue}
+                  onChange={(e) => setFilterValue(e.target.value)}
+                />
+                <button
+                  className="hover:shadow-button rounded-lg bg-[#6B53FF] py-3 px-4 text-sm font-bold text-white disabled:bg-[#EEEFF2] disabled:text-[#B2B7C2]"
+                  onClick={async () => {
+                    setSearchValue(filterValue);
+                    setOffset(0);
+
+                    // await fetchMore({
+                    //   variables: {
+                    //     offset,
+                    //     limit,
+                    //     mission_name:
+                    //       filterBy === "mission_name" ? filterValue : "",
+                    //     rocket_name:
+                    //       filterBy === "rocket_name" ? filterValue : "",
+                    //   },
+                    // });
+                  }}
+                >
+                  Search
+                </button>
+              </div>
 
               <div className="flex gap-2">
                 <button
@@ -79,6 +155,12 @@ const Home: NextPage = () => {
 
                 <button
                   className="hover:shadow-button rounded-lg bg-[#6B53FF] py-3 px-4 text-sm font-bold text-white disabled:bg-[#EEEFF2] disabled:text-[#B2B7C2]"
+                  disabled={
+                    (data?.launchesPast &&
+                      data?.launchesPast?.length > 0 &&
+                      data?.launchesPast?.length < 9) ||
+                    false
+                  }
                   onClick={async () => {
                     setOffset(offset + 9);
                     await fetchMore({
@@ -106,8 +188,6 @@ const Home: NextPage = () => {
                     const findLaunch = selectedData?.findIndex(
                       (l) => l.id === res?.id
                     );
-
-                    console.log("### findLaunch-", findLaunch);
 
                     if (findLaunch === -1 && res?.id) {
                       selectedData.push(res);

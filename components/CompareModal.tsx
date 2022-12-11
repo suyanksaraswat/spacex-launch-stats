@@ -26,7 +26,6 @@ interface CompareModalI {
 }
 
 const CompareModal = ({ open, setOpen, data }: CompareModalI) => {
-  console.log("## data-", data);
   return open ? (
     <div className="fixed h-screen w-screen">
       <div className="max-w-fullxl m-auto max-h-screen w-full overflow-y-auto overflow-x-hidden rounded-lg bg-slate-200 p-4 shadow">
