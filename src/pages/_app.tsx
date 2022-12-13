@@ -1,18 +1,21 @@
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import "../styles/globals.css";
-import type { AppType } from "next/dist/shared/lib/utils";
+import { useState } from 'react';
+import '../styles/globals.css'
+import type { AppProps } from 'next/app'
+import { Hydrate, QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
+import '../styles/globals.css'
 
-const client = new ApolloClient({
-  uri: "https://api.spacex.land/graphql/",
-  cache: new InMemoryCache(),
-});
+function MyApp({ Component, pageProps }: AppProps) {
+  const [queryClient] = useState(() => new QueryClient());
 
-const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <ApolloProvider client={client}>
-      <Component {...pageProps} />
-    </ApolloProvider>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
+      <Hydrate state={pageProps.dehydratedState}>
+        <Component {...pageProps} />
+      </Hydrate>
+    </QueryClientProvider>
   );
-};
+}
 
-export default MyApp;
+export default MyApp

@@ -1,8 +1,12 @@
-import { type NextPage } from "next";
+import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
-import { usePastLaunchesListQuery } from "../../graphql/graphql";
-import CompareModal from "../../components/CompareModal";
+import CompareModal from "../components/CompareModal";
+
+import {
+  GetLaunchesPastQuery,
+  useGetLaunchesPastQuery,
+} from "../graphql/generated";
 
 const Home: NextPage = () => {
   const limit = 9;
@@ -13,22 +17,13 @@ const Home: NextPage = () => {
   const [filterValue, setFilterValue] = useState("");
   const [searchValue, setSearchValue] = useState("");
 
-  const { data, fetchMore, loading, error } = usePastLaunchesListQuery({
-    variables: {
-      offset,
+  const { data, isFetching, error } =
+    useGetLaunchesPastQuery<GetLaunchesPastQuery>({
       limit,
+      offset,
       mission_name: filterBy === "mission_name" ? searchValue : "",
       rocket_name: filterBy === "rocket_name" ? searchValue : "",
-    },
-  });
-
-  if (error && !loading) {
-    return (
-      <p className="font-generalsans text-base font-bold text-[#525C76]">
-        {error?.message}
-      </p>
-    );
-  }
+    });
 
   return (
     <>
@@ -48,7 +43,7 @@ const Home: NextPage = () => {
           Find out the launch details and compare the stats
         </p>
 
-        {loading ? (
+        {isFetching ? (
           <p className="font-generalsans text-base font-bold text-[#525C76]">
             Loading...
           </p>
@@ -100,13 +95,6 @@ const Home: NextPage = () => {
                   onClick={async () => {
                     if (offset !== 0) {
                       setOffset(offset - 9);
-
-                      await fetchMore({
-                        variables: {
-                          offset,
-                          limit,
-                        },
-                      });
                     }
                   }}
                 >
@@ -123,12 +111,6 @@ const Home: NextPage = () => {
                   }
                   onClick={async () => {
                     setOffset(offset + 9);
-                    await fetchMore({
-                      variables: {
-                        offset,
-                        limit,
-                      },
-                    });
                   }}
                 >
                   Next
